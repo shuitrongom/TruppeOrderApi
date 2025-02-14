@@ -35,17 +35,22 @@ public class ProductoController {
 	public ResponseEntity<List<ProductoDTO>> findAll(@RequestParam(value = "productoId",required = false,defaultValue = "") Integer productoId,
 			@RequestParam(value = "ordenId",required = false,defaultValue = "") Integer ordenId){
 		
-		List<Producto> productos;
+		List<Producto> productoList;
+		Producto productos;
 		if(productoId==null && ordenId==null) {
-			productos = service.findAll();
+			productoList = service.findAll();
+			List<ProductoDTO> productoDTOs = converter.fromEntity(productoList);
+			return new WrapperResponse(true,"SUCCESS", productoDTOs).createResponse(HttpStatus.OK);
 		}else if(productoId==null){
 			productos = service.findByOrdenId(ordenId);
+			ProductoDTO productoDTOs = converter.fromEntity(productos);
+			return new WrapperResponse(true,"SUCCESS", productoDTOs).createResponse(HttpStatus.OK);
 		}else {
 			productos = service.findByProductoId(productoId);
+			ProductoDTO productoDTOs = converter.fromEntity(productos);
+			return new WrapperResponse(true,"SUCCESS", productoDTOs).createResponse(HttpStatus.OK);
 		}
 		
-		List<ProductoDTO> productoDTOs = converter.fromEntity(productos);
-		return new WrapperResponse(true,"SUCCESS", productoDTOs).createResponse(HttpStatus.OK);
 	}
 	
 	@GetMapping(value = "/{id}")
@@ -62,9 +67,16 @@ public class ProductoController {
 		return new WrapperResponse(true,"SUCCESS", productoRegDTO).createResponse(HttpStatus.CREATED);
 	}
 	
-	@PutMapping(value = "/{id}")
-	public ResponseEntity<ProductoDTO> update(@PathVariable("id") int id, @RequestBody ProductoDTO productoDTO){
+	@PutMapping()
+	public ResponseEntity<ProductoDTO> update( @RequestBody ProductoDTO productoDTO){
 		Producto productoReg = service.update(converter.fromDTO(productoDTO));
+		ProductoDTO productoRegDTO = converter.fromEntity(productoReg);
+		return new WrapperResponse(true,"SUCCESS", productoRegDTO).createResponse(HttpStatus.OK);
+	}
+	
+	@PutMapping(value = "/updatecodigo")
+	public ResponseEntity<ProductoDTO> updateCodigo(@RequestBody ProductoDTO productoDTO){
+		Producto productoReg = service.updateForCodigo(converter.fromDTO(productoDTO));
 		ProductoDTO productoRegDTO = converter.fromEntity(productoReg);
 		return new WrapperResponse(true,"SUCCESS", productoRegDTO).createResponse(HttpStatus.OK);
 	}
