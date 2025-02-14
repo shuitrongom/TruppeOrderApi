@@ -1,5 +1,8 @@
 package com.trupper.order.api.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +59,7 @@ public class OrdenController {
 	}
 
 	@PostMapping()
-	public ResponseEntity<OrdenDTO> create(@RequestBody OrdenDTO ordenDTO){
+	public ResponseEntity<OrdenDTO> create(@RequestBody OrdenDTO ordenDTO) throws ParseException{
 		Orden ordenReg = service.save(converter.fromDTO(ordenDTO));
 		OrdenDTO ordenRegDTO = converter.fromEntity(ordenReg);
 		return new WrapperResponse(true,"SUCCESS", ordenRegDTO).createResponse(HttpStatus.CREATED);
