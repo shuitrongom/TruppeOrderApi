@@ -40,7 +40,7 @@ public class ProductoServiceImpl implements ProductoService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<Producto> findByProductoId(Integer productoId) {
+	public Producto findByProductoId(Integer productoId) {
 		try {
 			return repository.findByProductoId(productoId);
 		} catch (ValidateServicesException | NoDataFoundException e) {
@@ -55,7 +55,7 @@ public class ProductoServiceImpl implements ProductoService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<Producto> findByOrdenId(Integer ordenId) {
+	public Producto findByOrdenId(Integer ordenId) {
 		try {
 			return repository.findByOrdenId(ordenId);
 		} catch (ValidateServicesException | NoDataFoundException e) {
@@ -107,6 +107,29 @@ public class ProductoServiceImpl implements ProductoService {
 		try {
 			ProductoValidator.validator(producto);
 			Producto productoOP = repository.findById(producto.getProductoId()).orElseThrow(()-> new NoDataFoundException("No existe el registro con ese ID"));
+			productoOP.setCodigo(producto.getCodigo());
+			productoOP.setDescripcion(producto.getDescripcion());
+			productoOP.setPrecio(producto.getPrecio());
+			return productoOP;
+		} catch (ValidateServicesException | NoDataFoundException e) {
+			log.info(e.getMessage(),e);
+			throw e;		
+			}
+		catch (Exception e) {
+			log.error(e.getMessage(),e);
+			throw new GeneralServicesException(e.getMessage(),e);		
+			}
+	}
+	
+	@Override
+	@Transactional
+	public Producto updateForCodigo(Producto producto) {
+		try {
+			ProductoValidator.validator(producto);
+			Producto productoOP = repository.findByCodigo(producto.getCodigo());
+			if(productoOP==null) {
+				throw new ValidateServicesException("El codigo es requerido");
+			}
 			productoOP.setCodigo(producto.getCodigo());
 			productoOP.setDescripcion(producto.getDescripcion());
 			productoOP.setPrecio(producto.getPrecio());
