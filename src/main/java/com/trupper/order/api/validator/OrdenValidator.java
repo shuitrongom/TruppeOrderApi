@@ -6,7 +6,7 @@ import com.trupper.order.api.exception.ValidateServicesException;
 public class OrdenValidator {
 	
 	public static void validator(Orden orden) {
-		if(orden.getOrdenId()==0) {
+		if(orden.getSucursalId()==0) {
 			throw new ValidateServicesException("El nombre de la sucursal no existe");
 		}
 		if(orden.getTotal()<0) {
