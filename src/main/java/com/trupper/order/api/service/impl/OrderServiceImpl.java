@@ -1,16 +1,19 @@
 package com.trupper.order.api.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.trupper.order.api.entity.Orden;
+import com.trupper.order.api.entity.Sucursal;
 import com.trupper.order.api.exception.GeneralServicesException;
 import com.trupper.order.api.exception.NoDataFoundException;
 import com.trupper.order.api.exception.ValidateServicesException;
 import com.trupper.order.api.repository.OrdenRepository;
+import com.trupper.order.api.repository.SucursalRepository;
 import com.trupper.order.api.service.OrdenService;
 import com.trupper.order.api.validator.OrdenValidator;
 
@@ -22,6 +25,9 @@ public class OrderServiceImpl implements OrdenService {
 
 	@Autowired
 	OrdenRepository repository;
+	
+	@Autowired
+	SucursalRepository sucursalRepository;
 	
 	@Override
 	@Transactional(readOnly = true)
@@ -89,8 +95,8 @@ public class OrderServiceImpl implements OrdenService {
 	public Orden save(Orden orden) {
 		try {
 			OrdenValidator.validator(orden);
-			Orden ordenReg = repository.findBySucursalId(orden.getSucursalId());
-			if(ordenReg==null) {
+			Optional<Sucursal> sucursal = sucursalRepository.findById(orden.getSucursalId());
+			if(sucursal.isEmpty()) {
 				throw new ValidateServicesException("La sucursal no se ha dado de alta");
 			}
 			Orden ordenOP = repository.save(orden);
