@@ -40,10 +40,6 @@ public class SucursalController {
 		}else {
 			sucursals = service.findByNombre(nombre);
 		}
-		
-		if(sucursals.isEmpty()) {
-			return ResponseEntity.noContent().build();
-		}
 		List<SucursalDTO> sucursalDTO = converter.fromEntity(sucursals);
 		return new WrapperResponse(true,"SUCCESS", sucursalDTO).createResponse(HttpStatus.OK);
 	}
@@ -51,9 +47,6 @@ public class SucursalController {
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<WrapperResponse<SucursalDTO>> findById(@PathVariable("id") int id){
 		Sucursal sucursal = service.findById(id);
-		if(sucursal == null) {
-			return ResponseEntity.notFound().build();
-		}
 		SucursalDTO sucursalDTO = converter.fromEntity(sucursal);
 		return new WrapperResponse<SucursalDTO>(true,"SUCCESS", sucursalDTO).createResponse(HttpStatus.OK);
 	}
@@ -68,9 +61,6 @@ public class SucursalController {
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<SucursalDTO> update(@PathVariable("id") int id, @RequestBody SucursalDTO sucursalDTO){
 		Sucursal sucursalReg = service.save(converter.fromDTO(sucursalDTO));
-		if(sucursalReg == null) {
-			return ResponseEntity.notFound().build();
-		}
 		SucursalDTO sucursalRegDTO = converter.fromEntity(sucursalReg);
 		return new WrapperResponse(true,"SUCCESS", sucursalRegDTO).createResponse(HttpStatus.OK);
 	}
