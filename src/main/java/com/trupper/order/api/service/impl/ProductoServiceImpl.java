@@ -6,10 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.trupper.order.api.entity.Orden;
 import com.trupper.order.api.entity.Producto;
 import com.trupper.order.api.exception.GeneralServicesException;
 import com.trupper.order.api.exception.NoDataFoundException;
 import com.trupper.order.api.exception.ValidateServicesException;
+import com.trupper.order.api.repository.OrdenRepository;
 import com.trupper.order.api.repository.ProductoRepository;
 import com.trupper.order.api.service.ProductoService;
 import com.trupper.order.api.validator.ProductoValidator;
@@ -21,7 +23,9 @@ import lombok.extern.slf4j.Slf4j;
 public class ProductoServiceImpl implements ProductoService {
 	
 	@Autowired
-	ProductoRepository repository;
+	private ProductoRepository repository;
+	@Autowired
+	private OrdenRepository ordenRepository;
 
 	@Override
 	@Transactional(readOnly = true)
@@ -89,8 +93,8 @@ public class ProductoServiceImpl implements ProductoService {
 	public Producto save(Producto producto) {
 		try {
 			ProductoValidator.validator(producto);
-			Producto productoOrd = repository.findByOrdenId(producto.getOrdenId());
-			if(productoOrd==null) {
+			Orden orden = ordenRepository.findByOrdenId(producto.getOrdenId());
+			if(orden==null) {
 				throw new ValidateServicesException("La Orden no se ha dado de alta");
 			}
 			Producto productoOP = repository.save(producto);
