@@ -15,7 +15,6 @@ import lombok.Setter;
 @Builder
 public class OrdenDTO {
 
-	private int ordenId;
 	private int sucursalId;
 	private Date fecha;
 	private float total;
