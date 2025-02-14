@@ -39,16 +39,22 @@ public class OrdenController {
 	public ResponseEntity<List<OrdenDTO>> findAll(@RequestParam(value = "ordenId",required = false,defaultValue = "") Integer ordenId,
 			@RequestParam(value = "sucursalId",required = false,defaultValue = "") Integer sucursalId){
 		
-		List<Orden> ordens;
+		List<Orden> ordenList;
+		Orden ordens;
 		if(ordenId==null && sucursalId==null) {
-			ordens = service.findAll();
+			ordenList = service.findAll();
+			List<OrdenDTO> ordenDTO = converter.fromEntity(ordenList);
+			return new WrapperResponse(true,"SUCCESS", ordenDTO).createResponse(HttpStatus.OK);
 		}else if(ordenId==null){
 			ordens = service.findBySucursalId(sucursalId);
+			OrdenDTO ordenDTO = converter.fromEntity(ordens);
+			return new WrapperResponse(true,"SUCCESS", ordenDTO).createResponse(HttpStatus.OK);
 		}else {
 			ordens = service.findByOrdenId(ordenId);
+			OrdenDTO ordenDTO = converter.fromEntity(ordens);
+			return new WrapperResponse(true,"SUCCESS", ordenDTO).createResponse(HttpStatus.OK);
 		}
-		List<OrdenDTO> ordenDTO = converter.fromEntity(ordens);
-		return new WrapperResponse(true,"SUCCESS", ordenDTO).createResponse(HttpStatus.OK);
+		
 	}
 	
 	@GetMapping(value = "/{id}")
