@@ -35,7 +35,7 @@ public class SucursalController {
 	public ResponseEntity<List<SucursalDTO>> findAll(@RequestParam(value = "nombre",required = false,defaultValue = "") String nombre){
 		
 		List<Sucursal> sucursals;
-		if(nombre==null) {
+		if(nombre==null || nombre.isEmpty()) {
 			sucursals = service.findAll();
 		}else {
 			sucursals = service.findByNombre(nombre);
