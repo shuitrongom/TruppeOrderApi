@@ -40,7 +40,7 @@ public class OrderServiceImpl implements OrdenService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<Orden> findByOrdenId(Integer ordenId) {
+	public Orden findByOrdenId(Integer ordenId) {
 		try {
 			return repository.findByOrdenId(ordenId);
 		} catch (ValidateServicesException | NoDataFoundException e) {
@@ -55,7 +55,7 @@ public class OrderServiceImpl implements OrdenService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<Orden> findBySucursalId(Integer sucursalId) {
+	public Orden findBySucursalId(Integer sucursalId) {
 		try {
 			return repository.findBySucursalId(sucursalId);
 		} catch (ValidateServicesException | NoDataFoundException e) {
@@ -89,6 +89,10 @@ public class OrderServiceImpl implements OrdenService {
 	public Orden save(Orden orden) {
 		try {
 			OrdenValidator.validator(orden);
+			Orden ordenReg = repository.findBySucursalId(orden.getSucursalId());
+			if(ordenReg==null) {
+				throw new ValidateServicesException("La sucursal no se ha dado de alta");
+			}
 			Orden ordenOP = repository.save(orden);
 			return ordenOP;
 		} catch (ValidateServicesException | NoDataFoundException e) {
