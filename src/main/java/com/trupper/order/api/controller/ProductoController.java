@@ -64,7 +64,7 @@ public class ProductoController {
 	
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<ProductoDTO> update(@PathVariable("id") int id, @RequestBody ProductoDTO productoDTO){
-		Producto productoReg = service.save(converter.fromDTO(productoDTO));
+		Producto productoReg = service.update(converter.fromDTO(productoDTO));
 		ProductoDTO productoRegDTO = converter.fromEntity(productoReg);
 		return new WrapperResponse(true,"SUCCESS", productoRegDTO).createResponse(HttpStatus.OK);
 	}
