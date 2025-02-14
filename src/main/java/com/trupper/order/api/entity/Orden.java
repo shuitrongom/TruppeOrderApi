@@ -44,15 +44,5 @@ public class Orden {
 	
 	@Column(nullable = false)
 	private float total;
-	
-	@Column(name="created_at", nullable = false, updatable = false)
-	@Temporal(TemporalType.TIMESTAMP)
-	@CreatedDate
-	private Date createAt;
-	
-	@Column(name = "updated_at")
-	@Temporal(TemporalType.TIMESTAMP)
-	@LastModifiedDate
-	private Date updateAt;
 
 }
