@@ -44,10 +44,6 @@ public class OrdenController {
 		}else {
 			ordens = service.findByOrdenId(ordenId);
 		}
-		
-		if(ordens.isEmpty()) {
-			return ResponseEntity.noContent().build();
-		}
 		List<OrdenDTO> ordenDTO = converter.fromEntity(ordens);
 		return new WrapperResponse(true,"SUCCESS", ordenDTO).createResponse(HttpStatus.OK);
 	}
@@ -55,9 +51,6 @@ public class OrdenController {
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<WrapperResponse<OrdenDTO>> findById(@PathVariable("id") int id){
 		Orden orden = service.findById(id);
-		if(orden == null) {
-			return ResponseEntity.notFound().build();
-		}
 		OrdenDTO ordenDTO = converter.fromEntity(orden);
 		return new WrapperResponse<OrdenDTO>(true,"SUCCESS", ordenDTO).createResponse(HttpStatus.OK);
 	}
@@ -72,9 +65,6 @@ public class OrdenController {
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<OrdenDTO> update(@PathVariable("id") int id, @RequestBody OrdenDTO ordenDTO){
 		Orden ordenReg = service.save(converter.fromDTO(ordenDTO));
-		if(ordenReg == null) {
-			return ResponseEntity.notFound().build();
-		}
 		OrdenDTO ordenRegDTO = converter.fromEntity(ordenReg);
 		return new WrapperResponse(true,"SUCCESS", ordenRegDTO).createResponse(HttpStatus.OK);
 	}
