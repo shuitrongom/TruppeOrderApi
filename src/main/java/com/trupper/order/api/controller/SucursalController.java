@@ -60,7 +60,7 @@ public class SucursalController {
 	
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<SucursalDTO> update(@PathVariable("id") int id, @RequestBody SucursalDTO sucursalDTO){
-		Sucursal sucursalReg = service.save(converter.fromDTO(sucursalDTO));
+		Sucursal sucursalReg = service.update(converter.fromDTO(sucursalDTO));
 		SucursalDTO sucursalRegDTO = converter.fromEntity(sucursalReg);
 		return new WrapperResponse(true,"SUCCESS", sucursalRegDTO).createResponse(HttpStatus.OK);
 	}
