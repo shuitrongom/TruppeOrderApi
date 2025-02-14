@@ -12,7 +12,6 @@ public class OrdenConverter extends AbstracConvert<Orden, OrdenDTO> {
 	public OrdenDTO fromEntity(Orden entity) {
 		if(entity==null) return null;
 		return OrdenDTO.builder()
-				.ordenId(entity.getOrdenId())
 				.sucursalId(entity.getSucursalId())
 				.fecha(entity.getFecha())
 				.total(entity.getTotal())
@@ -23,7 +22,6 @@ public class OrdenConverter extends AbstracConvert<Orden, OrdenDTO> {
 	public Orden fromDTO(OrdenDTO dto) {
 		if(dto==null) return null;
 		return Orden.builder()
-				.ordenId(dto.getOrdenId())
 				.sucursalId(dto.getSucursalId())
 				.fecha(dto.getFecha())
 				.total(dto.getTotal())
