@@ -89,6 +89,10 @@ public class ProductoServiceImpl implements ProductoService {
 	public Producto save(Producto producto) {
 		try {
 			ProductoValidator.validator(producto);
+			Producto productoOrd = repository.findByOrdenId(producto.getOrdenId());
+			if(productoOrd==null) {
+				throw new ValidateServicesException("La Orden no se ha dado de alta");
+			}
 			Producto productoOP = repository.save(producto);
 			return productoOP;
 		} catch (ValidateServicesException | NoDataFoundException e) {
